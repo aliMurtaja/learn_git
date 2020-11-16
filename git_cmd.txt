@@ -1,0 +1,293 @@
+
+NOTES------
+
+##three stage architechture
+	
+	1)working directory:
+		this is your working directory where you write your code.
+
+	2)stage area:
+		this is stage area where your file are staged, and ready for commited(commite meaned to take the snapshoots)
+
+	3)git directory(repository):
+		when you commite your code after staging, all changes are goes to git directory to track the changes for future
+
+NOTE THAT:: commite means to take the snapshoots
+
+NOTE THAT:: on logn LOG, you can tarminate by pressing q key
+
+NOTE THAT:: if you put files in staging area, and make change any file befor commited, then run the commit cmd, only those file will be commited which are put into the staging area.
+Ex::
+	-the files you put in staging area (assume this is version 1 to be commited(this is staging area not working directory))
+	-after that make change any file(on working directory)(assume this is a version 2)
+		if you commit the code only verion 1 code will be commited 
+
+NOTE THAT:: if you use .gitignore filem, make it commit.
+	without commit it work, but exist in untracked area
+	(means whenever you change .gitignore file make it commit, after commit it ignore all file that exist into the .gitignore file)
+
+
+NOTE THAT::
+	who is author::
+		the one who make the file called author.
+	who is commit::
+		the one who change the file called commiter
+
+
+NOTE THAT::
+	working directory === unstaged area(modified area)
+
+NOTE THAT::
+	in gitbase, for paste use shift+insert
+
+
+##ALIAS::
+	you can make alias for your git cmd:
+		assume if you need to check status again and again, you can make alias for that:
+			syntex--> git config --global alias.<alias_name> <cmd_name>
+			Ex:: 
+				--> git config --global alias.st status
+				(now you can use --> git st(same as --> git status))
+
+			likewise you can make as many alias as you want for your git cmd
+
+
+##BRANCHING(start)(most important topic)
+
+	==>you can make branch in your git repository, which are fully saparete to your master branch.
+	Ex::
+		-you have f1, f2, f2, fol1, fol2, fol3 in your working directory(in your master brach)
+		-you can make your own branch. Ex branch_1
+		-your branc_1 has their own f1, f2, f2, fol1, fol2, fol3, in these file and folder you can change any file and folder, which can't be reflect your master branch.
+		-if everything OK with your branch_1, you can merge branch_1 with your master branch.
+
+	==> cmd::
+		$$to make new branch::
+			--> git checkout -b <your_branch_name> //this will make a new branch ang get we into the that new branch.
+				(the -b indicate branch) 
+		$$to switch the branches::
+			--> git checkout <your_branch_name>
+		$$to see the all branches::
+			--> git branch
+		$$to merge the your branch to your master(working directory)
+			--> git merge <your_branch_name>
+		$$to see the already merged branch(jo branch merge ho chuki hai, ab hakm inhe delete kar sakte hai)
+			--> git branch --merged
+		$$to see unmerged branch(jo branch merged nahi hui hai)
+			--> git branch --no-merged
+		$$to delete the brach
+			--> git branch -d <your_branch_name> //if your is not merge, it give an Err
+				(d stand for delete)
+		$$to more info
+			--> git branch -v //show brach name, hash, and last commit msg
+
+
+
+
+	NOTE THAT:: branch is not pushed on remote, you have to explicitly move the brach on remote.
+		--> to push the branch on remote::
+			--> git push origin <your_branch_name>
+		--> to delete the branch on remote::
+			--> git push -d origin <your_brnch_name>
+
+	NOT THAT:: if get conflict Err after mergin, you have to fix the conlict first, after that you have to make resolving conflict(for resolving conflict, you have to use --> git add .(we kw that this cmd are used for staging area, but this cmd is also used for resolving conflict) ) and commit(in between if check the status it suggest that you have unmerged path).
+
+	--but if you do not have any conflict, it show an editor where you directly type --> :WQ <-- for commit for next process
+
+##BRANCHING(end)(most important topic)
+
+
+##STASH(start)(most important topic)
+##stash
+	using the stash, you can save your unstaged area(working tree change) in stack, and make working directory as last your commit after that you can apply any opration sach as 1)--> git pull   etc.
+
+	cmd::
+		--> git stash // make temporary stack and save your unstaged area changes and with randomly name
+		--> git stash save <your_stack_name> // make temporary stack and save your unstaged area changes and with <your_stack_name> name
+		--> git stash list // show your list of stack
+		--> git stash pop // will aplly the last one stash as well as delete it.
+		--> 
+
+##STASH(end)(most important topic)
+
+
+REMOTE(start)::
+
+1) to add the remote::
+	--> git add remote <your_origin_name> <url_of_hosting_git_repository>
+	lets break down it::
+		git --> your cmd toole
+		git add --> we say git to add something
+		git add remote --> we say git to add remote
+		git add remote <your_origin_name> --> your remote name
+		git add remote <your_origin_name> <url_of_hosting_git_repository> --> url of your git repository
+
+1) after adding the remote, to see the where we push pull our code::
+	git remote -v
+
+
+	NOTE THAT:: if you commite your file's after staging but not pushed on origin, then your working tree would be same as staging area, but next time whenever you get the pull on origin code would be diffrence bcs last time you commit the code but not pushed
+
+REMOTE(end)::
+
+
+
+PUSH(start)::
+	
+	NOTE THAT::
+			let's take a scenaria ::		
+		-if two people are work simantanacly on same git repository.
+		-if one people of work's has been done and he pushe the code.
+		-on the same time second people also done their work and pushed the code.
+			he/she get and Err::
+				Ex::
+					$ git push
+					To https://github.com/aliMurtaja/learn_git.git
+					 ! [rejected]        master -> master (fetch first)
+					error: failed to push some refs to 'https://github.com/aliMurtaja/learn_git.git'
+					hint: Updates were rejected because the remote contains work that you do
+					hint: not have locally. This is usually caused by another repository pushing
+					hint: to the same ref. You may want to first integrate the remote changes
+					hint: (e.g., 'git pull ...') before pushing again.
+					hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+ 		
+ 		conclusion::this is becouse on the same time two and more peopole can't push the code one by one, and this is make sense.
+
+ 		solution:: if one push the code, then second people will have to pull the code first and merge with their code and after that he/she will push the code.
+
+ 	NOTE THAT:: https://stackoverflow.com/questions/1125968/how-do-i-force-git-pull-to-overwrite-local-files 
+
+
+ 	NOTE THAT::
+ 		-if you push your code on remote, you have to up to date with remote(mean hash will check on the pushing time) 
+ 		-if hash change(someone have pushed the code), you will not push the code, first you will have to pull the code.
+
+
+PUSH(end)::
+
+PULL(start)::
+
+	NOTE THAT::
+		-if hash change (means someone push the code), then you can pull the code, otherwise it sho "Already up to date".
+		-if you pull the code, and change the code locally, and assume if you would pull the code will become the code same as remote, this will not happend bcs no one has hash the code (change the code remotly), in this scenerio you have to use this cmd::
+			--> git reset --hard origin/master.
+
+	NOTE THAT::
+		before pulling the code, you have the make sure your changes(modified) should be stashed or commited.
+
+PULL(end)::
+
+1) to check the status
+	--> git status
+
+
+2) to set the global name 
+	--> git config --global user.name "murtaja"
+
+
+2) to set the global email
+	--> git config --global user.email "murtajaali10@gmail.com"
+
+2) to see the name
+	--> git config user.email 
+
+2) to see email
+	--> git config user.email
+
+2) to see the of our configuration 
+	--> git config user.email
+
+
+1) to initialize the git repository
+	--> git init
+
+1) to put the all files in staging area
+	--> git add --a  OR  git add -A
+
+
+
+
+
+
+
+
+1) to check the all your commit (all your snapshoots)
+	--> git log(logs means your commit)
+			===>on logn LOG, you can tarminate by pressing q key
+		parameters for filtering the logs::
+			1) --> git log -p  //show the logs with all changes
+			2) --> git log -p -n //show the logs with how many number of log do you want to see
+			3) --> git log --stat //show the logs with their littile bit summary
+			4) --> git log --pretty=oneline //show all log with one line
+			5) --> git log --pretty=short //show all log with short summary
+			6) --> git log --pretty=full //show all log with long summary
+			7) --> git log --since=n //show logs only last given number of days
+			8) --> git log --since=n.weeks //show logs only last given number of weeks
+			9) --> git log --since=n.months //show logs only last given number of months
+			1) --> git log -p -1 //show the last one commit
+
+
+
+
+
+
+1) to delete the git repository(linux cmd)(dangorous cmd)
+	--> rm -rf .git
+
+1) to get the any clone any git repository on network
+	--> git clone <url> <yr desire name>
+
+
+1) to make the file(linux cmd)
+	--> li
+
+1)	to check the difference between staging area and working directory
+	--> git diff
+
+		Ex::
+			-the files you put in staging area (assume this is version 1 to be commited(this is staging area not working directory))
+			-after that make change any file(on working directory)(assume this is a version 2)
+
+
+
+1) to check the differences between stagging area and your last one commit
+	--> git diff --staged
+
+
+2) skipping the staging area and make the commit directally
+	--> git commit -a -m "your direct commit"
+		NOTE THAT:: the file's exist in a untracked area will not be directaly commit, fot that you have put in a staging area and after that make it commit
+
+
+1) to remove the file
+	--> git rm <filename> 
+			this will automatically stage the delete file, and you can commit after that
+
+
+
+1) to rename the file
+	--> git mv <actual_file> <renamed_file>
+			this will automatically stage the renamed file, and you can commit after that
+
+
+1) to untracked the file which were being tracked before, we have to put it in .gitignore file (make sense), but although those file will be tracked.
+	to fix that this issue we have use another cmd after putting it into the .gitignore file
+	--> git rm --cached <your_file_name>
+
+
+1) to unstage the file which are exist into the staging area::
+	--> git restore --staged <your_filr_name>
+
+
+1) if your file is into the modified(unstaged) area, and at this point you want this unstaged file will replace your last commit, then use this cmd::
+	##for a file::
+	--> git checkout --<your_file_name>
+	##for all file's(which are into the unstaged(modified) area)::
+	-->git checkout -f
+	NOTE THAT::
+		this will not be happend after file get into the staging area, bcs we kw that after cmg the staging area only we can commit it or restore(unstaged) it, it mean nothings would be happened 
+
+
+
+git clone https://tosif_iziss@bitbucket.org/pikotechnologies/boris-admin.git
+
